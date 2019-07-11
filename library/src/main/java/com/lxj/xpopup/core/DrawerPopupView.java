@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+
 import com.lxj.xpopup.R;
 import com.lxj.xpopup.enums.PopupPosition;
 import com.lxj.xpopup.widget.PopupDrawerLayout;
@@ -21,6 +22,11 @@ public abstract class DrawerPopupView extends BasePopupView {
         super(context);
         drawerLayout = findViewById(R.id.drawerLayout);
         drawerContentContainer = findViewById(R.id.drawerContentContainer);
+        initImplContentView();
+    }
+
+    @Override
+    protected void initImplContentView() {
         View contentView = LayoutInflater.from(getContext()).inflate(getImplLayoutId(), drawerContentContainer, false);
         drawerContentContainer.addView(contentView);
     }

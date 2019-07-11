@@ -29,8 +29,10 @@ import com.lxj.xpopup.enums.PopupStatus;
 import com.lxj.xpopup.impl.FullScreenPopupView;
 import com.lxj.xpopup.util.KeyboardUtils;
 import com.lxj.xpopup.util.XPopupUtils;
+
 import java.util.ArrayList;
 import java.util.Stack;
+
 import static com.lxj.xpopup.enums.PopupAnimation.NoAnimation;
 
 /**
@@ -64,6 +66,8 @@ public abstract class BasePopupView extends FrameLayout {
     public BasePopupView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
+
+    protected abstract void initImplContentView();
 
     /**
      * 执行初始化
@@ -127,8 +131,9 @@ public abstract class BasePopupView extends FrameLayout {
 
     private int preSoftMode = -1;
     private boolean hasMoveUp = false;
-    private void collectAnimator(){
-        if(popupContentAnimator==null){
+
+    private void collectAnimator() {
+        if (popupContentAnimator == null) {
             // 优先使用自定义的动画器
             if (popupInfo.customAnimator != null) {
                 popupContentAnimator = popupInfo.customAnimator;
@@ -221,7 +226,7 @@ public abstract class BasePopupView extends FrameLayout {
         }
         // 此处焦点可能被内容的EditText抢走，也需要给EditText也设置返回按下监听
         setOnKeyListener(new BackPressListener());
-        if(!popupInfo.autoFocusEditText) showSoftInput(this);
+        if (!popupInfo.autoFocusEditText) showSoftInput(this);
 
         //let all EditText can process back pressed.
         ArrayList<EditText> list = new ArrayList<>();
@@ -238,7 +243,7 @@ public abstract class BasePopupView extends FrameLayout {
         }
     }
 
-    protected void showSoftInput(View focusView){
+    protected void showSoftInput(View focusView) {
         if (popupInfo.autoOpenSoftInput) {
             if (showSoftInputTask == null) {
                 showSoftInputTask = new ShowSoftInputTask(focusView);

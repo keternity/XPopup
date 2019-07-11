@@ -20,6 +20,14 @@ public class BottomPopupView extends BasePopupView {
     protected SmartDragLayout bottomPopupContainer;
     public BottomPopupView(@NonNull Context context) {
         super(context);
+        bottomPopupContainer = findViewById(R.id.bottomPopupContainer);
+        initImplContentView();
+    }
+
+    @Override
+    protected void initImplContentView() {
+        View contentView = LayoutInflater.from(getContext()).inflate(getImplLayoutId(), bottomPopupContainer, false);
+        bottomPopupContainer.addView(contentView);
     }
 
     @Override
@@ -30,9 +38,6 @@ public class BottomPopupView extends BasePopupView {
     @Override
     protected void initPopupContent() {
         super.initPopupContent();
-        bottomPopupContainer = findViewById(R.id.bottomPopupContainer);
-        View contentView = LayoutInflater.from(getContext()).inflate(getImplLayoutId(), bottomPopupContainer, false);
-        bottomPopupContainer.addView(contentView);
         bottomPopupContainer.enableDrag(popupInfo.enableDrag);
         bottomPopupContainer.dismissOnTouchOutside(popupInfo.isDismissOnTouchOutside);
         bottomPopupContainer.hasShadowBg(popupInfo.hasShadowBg);
