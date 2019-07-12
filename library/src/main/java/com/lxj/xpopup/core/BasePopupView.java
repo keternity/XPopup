@@ -46,7 +46,7 @@ public abstract class BasePopupView extends FrameLayout {
     protected ShadowBgAnimator shadowBgAnimator;
     private int touchSlop;
     public PopupStatus popupStatus = PopupStatus.Dismiss;
-    private boolean isCreated = false;
+    private boolean isCreated = false, cancelable = true;
 
     public BasePopupView(@NonNull Context context) {
         super(context);
@@ -588,7 +588,9 @@ public abstract class BasePopupView extends FrameLayout {
                     float dy = event.getY() - y;
                     float distance = (float) Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
                     if (distance < touchSlop && popupInfo.isDismissOnTouchOutside) {
-                        dismiss();
+                        if (cancelable) {
+                            dismiss();
+                        }
                     }
                     x = 0;
                     y = 0;
@@ -598,5 +600,7 @@ public abstract class BasePopupView extends FrameLayout {
         return true;
     }
 
-
+    public void setCancelable(boolean cancelable) {
+        this.cancelable = cancelable;
+    }
 }

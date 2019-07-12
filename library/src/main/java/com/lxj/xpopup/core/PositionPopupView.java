@@ -19,7 +19,7 @@ import static com.lxj.xpopup.enums.PopupAnimation.ScaleAlphaFromCenter;
  * Create by dance, at 2019/6/14
  */
 public class PositionPopupView extends BasePopupView {
-    PartShadowContainer attachPopupContainer;
+    protected PartShadowContainer attachPopupContainer;
 
     public PositionPopupView(@NonNull Context context) {
         super(context);
