@@ -2,12 +2,17 @@ package com.lxj.xpopup.core;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
+import com.eternity.android.annotation.extra.core.svc.control.ControlTower;
+import com.eternity.android.annotation.extra.core.svc.screen.Screen;
+import com.eternity.android.annotation.extra.core.svc.views.Views;
 import com.lxj.xpopup.R;
 import com.lxj.xpopup.animator.PopupAnimator;
 import com.lxj.xpopup.animator.ScaleAlphaAnimator;
@@ -23,8 +28,33 @@ public class CenterPopupView extends BasePopupView {
     protected FrameLayout centerPopupContainer;
     protected int bindLayoutId;
     protected int bindItemLayoutId;
+
     public CenterPopupView(@NonNull Context context) {
         super(context);
+        initInject();
+    }
+
+    public CenterPopupView(@NonNull Screen screen) {
+        super(screen);
+        initInject();
+    }
+
+    public CenterPopupView(@NonNull Fragment fragment) {
+        super(fragment);
+        initInject();
+    }
+
+    public CenterPopupView(@NonNull Views viewAction) {
+        super(viewAction);
+        initInject();
+    }
+
+    public CenterPopupView(@NonNull ControlTower controlAction) {
+        super(controlAction);
+        initInject();
+    }
+
+    private void initInject(){
         centerPopupContainer = findViewById(R.id.centerPopupContainer);
         initImplContentView();
     }
@@ -66,7 +96,7 @@ public class CenterPopupView extends BasePopupView {
     }
 
     protected int getMaxWidth() {
-        return popupInfo.maxWidth==0 ? (int) (XPopupUtils.getWindowWidth(getContext()) * 0.86f)
+        return popupInfo.maxWidth == 0 ? (int) (XPopupUtils.getWindowWidth(getContext()) * 0.86f)
                 : popupInfo.maxWidth;
     }
 

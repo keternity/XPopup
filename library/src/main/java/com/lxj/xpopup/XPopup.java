@@ -1,12 +1,16 @@
 package com.lxj.xpopup;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.eternity.android.annotation.extra.core.svc.control.ControlTower;
+import com.eternity.android.annotation.extra.core.svc.screen.Screen;
+import com.eternity.android.annotation.extra.core.svc.views.Views;
 import com.lxj.xpopup.animator.PopupAnimator;
 import com.lxj.xpopup.core.AttachPopupView;
 import com.lxj.xpopup.core.BasePopupView;
@@ -36,6 +40,7 @@ import java.util.List;
 
 
 public class XPopup {
+
     private XPopup() {
     }
 
@@ -80,10 +85,30 @@ public class XPopup {
 
     public static class Builder {
         private final PopupInfo popupInfo = new PopupInfo();
-        private Context context;
+        private AppCompatActivity context;
+        private Fragment fragment;
+        private Screen screen;
+        private Views views;
+        private ControlTower controlAction;
 
-        public Builder(Context context) {
+        public Builder(AppCompatActivity context) {
             this.context = context;
+        }
+
+        public Builder(Fragment fragment) {
+            this.fragment = fragment;
+        }
+
+        public Builder(Screen screen) {
+            this.screen = screen;
+        }
+
+        public Builder(Views views) {
+            this.views = views;
+        }
+
+        public Builder(ControlTower controlAction) {
+            this.controlAction = controlAction;
         }
 
         public Builder popupType(PopupType popupType) {
@@ -358,7 +383,20 @@ public class XPopup {
          */
         public ConfirmPopupView asConfirm(String title, String content, String cancelBtnText, String confirmBtnText, OnConfirmListener confirmListener, OnCancelListener cancelListener, boolean isHideCancel) {
             popupType(PopupType.Center);
-            ConfirmPopupView popupView = new ConfirmPopupView(this.context);
+            ConfirmPopupView popupView;
+            if (this.fragment != null) {
+                popupView = new ConfirmPopupView(this.fragment);
+            } else if (this.context != null) {
+                popupView = new ConfirmPopupView(this.context);
+            } else if (this.screen != null) {
+                popupView = new ConfirmPopupView(this.screen);
+            } else if (this.views != null) {
+                popupView = new ConfirmPopupView(this.views);
+            } else if (this.controlAction != null) {
+                popupView = new ConfirmPopupView(this.controlAction);
+            } else {
+                return null;
+            }
             popupView.setTitleContent(title, content, null);
             popupView.setCancelText(cancelBtnText);
             popupView.setConfirmText(confirmBtnText);
@@ -389,7 +427,20 @@ public class XPopup {
          */
         public InputConfirmPopupView asInputConfirm(String title, String content, String inputContent, String hint, OnInputConfirmListener confirmListener, OnCancelListener cancelListener) {
             popupType(PopupType.Center);
-            InputConfirmPopupView popupView = new InputConfirmPopupView(this.context);
+            InputConfirmPopupView popupView;
+            if (this.fragment != null) {
+                popupView = new InputConfirmPopupView(this.fragment);
+            } else if (this.context != null) {
+                popupView = new InputConfirmPopupView(this.context);
+            } else if (this.screen != null) {
+                popupView = new InputConfirmPopupView(this.screen);
+            } else if (this.views != null) {
+                popupView = new InputConfirmPopupView(this.views);
+            } else if (this.controlAction != null) {
+                popupView = new InputConfirmPopupView(this.controlAction);
+            } else {
+                return null;
+            }
             popupView.setTitleContent(title, content, hint);
             popupView.inputContent = inputContent;
             popupView.setListener(confirmListener, cancelListener);
@@ -420,8 +471,21 @@ public class XPopup {
          */
         public CenterListPopupView asCenterList(String title, String[] data, int[] iconIds, int checkedPosition, OnSelectListener selectListener) {
             popupType(PopupType.Center);
-            CenterListPopupView popupView = new CenterListPopupView(this.context)
-                    .setStringData(title, data, iconIds)
+            CenterListPopupView popupView;
+            if (this.fragment != null) {
+                popupView = new CenterListPopupView(this.fragment);
+            } else if (this.context != null) {
+                popupView = new CenterListPopupView(this.context);
+            } else if (this.screen != null) {
+                popupView = new CenterListPopupView(this.screen);
+            } else if (this.views != null) {
+                popupView = new CenterListPopupView(this.views);
+            } else if (this.controlAction != null) {
+                popupView = new CenterListPopupView(this.controlAction);
+            } else {
+                return null;
+            }
+            popupView.setStringData(title, data, iconIds)
                     .setCheckedPosition(checkedPosition)
                     .setOnSelectListener(selectListener);
             popupView.popupInfo = this.popupInfo;
@@ -443,8 +507,21 @@ public class XPopup {
          */
         public LoadingPopupView asLoading(String title) {
             popupType(PopupType.Center);
-            LoadingPopupView popupView = new LoadingPopupView(this.context)
-                    .setTitle(title);
+            LoadingPopupView popupView;
+            if (this.fragment != null) {
+                popupView = new LoadingPopupView(this.fragment);
+            } else if (this.context != null) {
+                popupView = new LoadingPopupView(this.context);
+            } else if (this.screen != null) {
+                popupView = new LoadingPopupView(this.screen);
+            } else if (this.views != null) {
+                popupView = new LoadingPopupView(this.views);
+            } else if (this.controlAction != null) {
+                popupView = new LoadingPopupView(this.controlAction);
+            } else {
+                return null;
+            }
+            popupView.setTitle(title);
             popupView.popupInfo = this.popupInfo;
             return popupView;
         }
@@ -465,8 +542,21 @@ public class XPopup {
          */
         public BottomListPopupView asBottomList(String title, String[] data, int[] iconIds, int checkedPosition, boolean enableDrag, OnSelectListener selectListener) {
             popupType(PopupType.Bottom);
-            BottomListPopupView popupView = new BottomListPopupView(this.context)
-                    .setStringData(title, data, iconIds)
+            BottomListPopupView popupView;
+            if (this.fragment != null) {
+                popupView = new BottomListPopupView(this.fragment);
+            } else if (this.context != null) {
+                popupView = new BottomListPopupView(this.context);
+            } else if (this.screen != null) {
+                popupView = new BottomListPopupView(this.screen);
+            } else if (this.views != null) {
+                popupView = new BottomListPopupView(this.views);
+            } else if (this.controlAction != null) {
+                popupView = new BottomListPopupView(this.controlAction);
+            } else {
+                return null;
+            }
+            popupView.setStringData(title, data, iconIds)
                     .setCheckedPosition(checkedPosition)
                     .setOnSelectListener(selectListener);
             popupView.popupInfo = this.popupInfo;
@@ -502,8 +592,21 @@ public class XPopup {
          */
         public AttachListPopupView asAttachList(String[] data, int[] iconIds, int offsetX, int offsetY, OnSelectListener selectListener) {
             popupType(PopupType.AttachView);
-            AttachListPopupView popupView = new AttachListPopupView(this.context)
-                    .setStringData(data, iconIds)
+            AttachListPopupView popupView;
+            if (this.fragment != null) {
+                popupView = new AttachListPopupView(this.fragment);
+            } else if (this.context != null) {
+                popupView = new AttachListPopupView(this.context);
+            } else if (this.screen != null) {
+                popupView = new AttachListPopupView(this.screen);
+            } else if (this.views != null) {
+                popupView = new AttachListPopupView(this.views);
+            } else if (this.controlAction != null) {
+                popupView = new AttachListPopupView(this.controlAction);
+            } else {
+                return null;
+            }
+            popupView.setStringData(data, iconIds)
                     .setOffsetXAndY(offsetX, offsetY)
                     .setOnSelectListener(selectListener);
             popupView.popupInfo = this.popupInfo;
@@ -522,8 +625,21 @@ public class XPopup {
          */
         public ImageViewerPopupView asImageViewer(ImageView srcView, Object url, XPopupImageLoader imageLoader) {
             popupType(PopupType.ImageViewer);
-            ImageViewerPopupView popupView = new ImageViewerPopupView(this.context)
-                    .setSingleSrcView(srcView, url)
+            ImageViewerPopupView popupView;
+            if (this.fragment != null) {
+                popupView = new ImageViewerPopupView(this.fragment);
+            } else if (this.context != null) {
+                popupView = new ImageViewerPopupView(this.context);
+            } else if (this.screen != null) {
+                popupView = new ImageViewerPopupView(this.screen);
+            } else if (this.views != null) {
+                popupView = new ImageViewerPopupView(this.views);
+            } else if (this.controlAction != null) {
+                popupView = new ImageViewerPopupView(this.controlAction);
+            } else {
+                return null;
+            }
+            popupView.setSingleSrcView(srcView, url)
                     .setXPopupImageLoader(imageLoader);
             popupView.popupInfo = this.popupInfo;
             return popupView;
@@ -544,8 +660,21 @@ public class XPopup {
         public ImageViewerPopupView asImageViewer(ImageView srcView, Object url, boolean isInfinite, int placeholderColor, int placeholderStroke, int placeholderRadius,
                                                   boolean isShowSaveBtn, XPopupImageLoader imageLoader) {
             popupType(PopupType.ImageViewer);
-            ImageViewerPopupView popupView = new ImageViewerPopupView(this.context)
-                    .setSingleSrcView(srcView, url)
+            ImageViewerPopupView popupView;
+            if (this.fragment != null) {
+                popupView = new ImageViewerPopupView(this.fragment);
+            } else if (this.context != null) {
+                popupView = new ImageViewerPopupView(this.context);
+            } else if (this.screen != null) {
+                popupView = new ImageViewerPopupView(this.screen);
+            } else if (this.views != null) {
+                popupView = new ImageViewerPopupView(this.views);
+            } else if (this.controlAction != null) {
+                popupView = new ImageViewerPopupView(this.controlAction);
+            } else {
+                return null;
+            }
+            popupView.setSingleSrcView(srcView, url)
                     .isInfinite(isInfinite)
                     .setPlaceholderColor(placeholderColor)
                     .setPlaceholderStrokeColor(placeholderStroke)
@@ -589,8 +718,21 @@ public class XPopup {
                                                   int placeholderColor, int placeholderStroke, int placeholderRadius, boolean isShowSaveBtn,
                                                   OnSrcViewUpdateListener srcViewUpdateListener, XPopupImageLoader imageLoader) {
             popupType(PopupType.ImageViewer);
-            ImageViewerPopupView popupView = new ImageViewerPopupView(this.context)
-                    .setSrcView(srcView, currentPosition)
+            ImageViewerPopupView popupView;
+            if (this.fragment != null) {
+                popupView = new ImageViewerPopupView(this.fragment);
+            } else if (this.context != null) {
+                popupView = new ImageViewerPopupView(this.context);
+            } else if (this.screen != null) {
+                popupView = new ImageViewerPopupView(this.screen);
+            } else if (this.views != null) {
+                popupView = new ImageViewerPopupView(this.views);
+            } else if (this.controlAction != null) {
+                popupView = new ImageViewerPopupView(this.controlAction);
+            } else {
+                return null;
+            }
+            popupView.setSrcView(srcView, currentPosition)
                     .setImageUrls(urls)
                     .isInfinite(isInfinite)
                     .setPlaceholderColor(placeholderColor)

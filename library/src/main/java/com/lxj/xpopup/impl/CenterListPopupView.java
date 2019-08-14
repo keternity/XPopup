@@ -2,11 +2,15 @@ package com.lxj.xpopup.impl;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.eternity.android.annotation.extra.core.svc.control.ControlTower;
+import com.eternity.android.annotation.extra.core.svc.screen.Screen;
+import com.eternity.android.annotation.extra.core.svc.views.Views;
 import com.lxj.easyadapter.EasyAdapter;
 import com.lxj.easyadapter.MultiItemTypeAdapter;
 import com.lxj.easyadapter.ViewHolder;
@@ -28,6 +32,22 @@ public class CenterListPopupView extends CenterPopupView {
 
     public CenterListPopupView(@NonNull Context context) {
         super(context);
+    }
+
+    public CenterListPopupView(@NonNull Fragment context) {
+        super(context);
+    }
+
+    public CenterListPopupView(@NonNull Screen screen) {
+        super(screen);
+    }
+
+    public CenterListPopupView(@NonNull Views viewAction) {
+        super(viewAction);
+    }
+
+    public CenterListPopupView(@NonNull ControlTower controlAction) {
+        super(controlAction);
     }
 
     /**

@@ -2,10 +2,14 @@ package com.lxj.xpopup.core;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.eternity.android.annotation.extra.core.svc.control.ControlTower;
+import com.eternity.android.annotation.extra.core.svc.screen.Screen;
+import com.eternity.android.annotation.extra.core.svc.views.Views;
 import com.lxj.xpopup.R;
 import com.lxj.xpopup.enums.PopupPosition;
 import com.lxj.xpopup.widget.PopupDrawerLayout;
@@ -20,6 +24,30 @@ public abstract class DrawerPopupView extends BasePopupView {
 
     public DrawerPopupView(@NonNull Context context) {
         super(context);
+        initInject();
+    }
+
+    public DrawerPopupView(@NonNull Screen screen) {
+        super(screen);
+        initInject();
+    }
+
+    public DrawerPopupView(@NonNull Fragment fragment) {
+        super(fragment);
+        initInject();
+    }
+
+    public DrawerPopupView(@NonNull Views viewAction) {
+        super(viewAction);
+        initInject();
+    }
+
+    public DrawerPopupView(@NonNull ControlTower controlAction) {
+        super(controlAction);
+        initInject();
+    }
+
+    private void initInject(){
         drawerLayout = findViewById(R.id.drawerLayout);
         drawerContentContainer = findViewById(R.id.drawerContentContainer);
         initImplContentView();

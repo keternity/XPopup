@@ -5,7 +5,11 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 
+import com.eternity.android.annotation.extra.core.svc.control.ControlTower;
+import com.eternity.android.annotation.extra.core.svc.screen.Screen;
+import com.eternity.android.annotation.extra.core.svc.views.Views;
 import com.lxj.xpopup.R;
 import com.lxj.xpopup.animator.PopupAnimator;
 import com.lxj.xpopup.animator.ScrollScaleAnimator;
@@ -23,6 +27,22 @@ public class HorizontalAttachPopupView extends AttachPopupView {
         super(context);
     }
 
+    public HorizontalAttachPopupView(@NonNull Screen screen) {
+        super(screen);
+    }
+
+    public HorizontalAttachPopupView(@NonNull Fragment fragment) {
+        super(fragment);
+    }
+
+    public HorizontalAttachPopupView(@NonNull Views viewAction) {
+        super(viewAction);
+    }
+
+    public HorizontalAttachPopupView(@NonNull ControlTower controlAction) {
+        super(controlAction);
+    }
+
     @Override
     protected void initPopupContent() {
         super.initPopupContent();
@@ -30,7 +50,7 @@ public class HorizontalAttachPopupView extends AttachPopupView {
         defaultOffsetX = popupInfo.offsetX == 0 ? XPopupUtils.dp2px(getContext(), 4) : popupInfo.offsetX;
         if (!popupInfo.hasShadowBg) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                if(getPopupBackground()==null){
+                if (getPopupBackground() == null) {
                     defaultOffsetX -= bgDrawableMargin;
                     defaultOffsetY -= bgDrawableMargin;
                 }
@@ -66,7 +86,7 @@ public class HorizontalAttachPopupView extends AttachPopupView {
             isShowLeft = centerX > XPopupUtils.getWindowWidth(getContext()) / 2;
 
             translationX = isShowLeftToTarget() ? (rect.left - w - defaultOffsetX) : (rect.right + defaultOffsetX);
-            translationY = rect.top + (rect.height()-h)/2 + defaultOffsetY;
+            translationY = rect.top + (rect.height() - h) / 2 + defaultOffsetY;
         }
         getPopupContentView().setTranslationX(translationX);
         getPopupContentView().setTranslationY(translationY);

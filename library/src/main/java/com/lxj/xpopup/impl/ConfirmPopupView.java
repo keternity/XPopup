@@ -2,10 +2,14 @@ package com.lxj.xpopup.impl;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.eternity.android.annotation.extra.core.svc.control.ControlTower;
+import com.eternity.android.annotation.extra.core.svc.screen.Screen;
+import com.eternity.android.annotation.extra.core.svc.views.Views;
 import com.lxj.xpopup.R;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.CenterPopupView;
@@ -27,12 +31,29 @@ public class ConfirmPopupView extends CenterPopupView implements View.OnClickLis
         super(context);
     }
 
+    public ConfirmPopupView(Fragment fragment) {
+        super(fragment);
+    }
+
+    public ConfirmPopupView(@NonNull Screen screen) {
+        super(screen);
+    }
+
+    public ConfirmPopupView(@NonNull Views viewAction) {
+        super(viewAction);
+    }
+
+    public ConfirmPopupView(@NonNull ControlTower controlAction) {
+        super(controlAction);
+    }
+
     /**
      * 绑定已有布局
+     *
      * @param layoutId 要求布局中必须包含的TextView以及id有：tv_title，tv_content，tv_cancel，tv_confirm
      * @return
      */
-    public ConfirmPopupView bindLayout(int layoutId){
+    public ConfirmPopupView bindLayout(int layoutId) {
         bindLayoutId = layoutId;
         return this;
     }
@@ -50,7 +71,7 @@ public class ConfirmPopupView extends CenterPopupView implements View.OnClickLis
         tv_cancel = findViewById(R.id.tv_cancel);
         tv_confirm = findViewById(R.id.tv_confirm);
 
-        if(bindLayoutId==0) applyPrimaryColor();
+        if (bindLayoutId == 0) applyPrimaryColor();
 
         tv_cancel.setOnClickListener(this);
         tv_confirm.setOnClickListener(this);

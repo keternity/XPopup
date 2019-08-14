@@ -2,10 +2,14 @@ package com.lxj.xpopup.core;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.eternity.android.annotation.extra.core.svc.control.ControlTower;
+import com.eternity.android.annotation.extra.core.svc.screen.Screen;
+import com.eternity.android.annotation.extra.core.svc.views.Views;
 import com.lxj.xpopup.R;
 import com.lxj.xpopup.animator.PopupAnimator;
 import com.lxj.xpopup.animator.ScrollScaleAnimator;
@@ -23,6 +27,28 @@ public class PositionPopupView extends BasePopupView {
 
     public PositionPopupView(@NonNull Context context) {
         super(context);
+        initInject();
+    }
+
+    public PositionPopupView(@NonNull Fragment fragment) {
+        super(fragment);
+        initInject();
+    }
+
+    public PositionPopupView(@NonNull Screen screen) {
+        super(screen);
+        initInject();
+    }
+
+    public PositionPopupView(@NonNull Views viewAction) {
+        super(viewAction);
+    }
+
+    public PositionPopupView(@NonNull ControlTower controlAction) {
+        super(controlAction);
+    }
+
+    private void initInject() {
         attachPopupContainer = findViewById(R.id.attachPopupContainer);
         initImplContentView();
     }

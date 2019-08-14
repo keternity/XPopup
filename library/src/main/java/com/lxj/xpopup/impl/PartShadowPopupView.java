@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -13,6 +14,9 @@ import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
+import com.eternity.android.annotation.extra.core.svc.control.ControlTower;
+import com.eternity.android.annotation.extra.core.svc.screen.Screen;
+import com.eternity.android.annotation.extra.core.svc.views.Views;
 import com.lxj.xpopup.animator.PopupAnimator;
 import com.lxj.xpopup.animator.TranslateAnimator;
 import com.lxj.xpopup.core.AttachPopupView;
@@ -28,6 +32,22 @@ import com.lxj.xpopup.util.XPopupUtils;
 public abstract class PartShadowPopupView extends AttachPopupView {
     public PartShadowPopupView(@NonNull Context context) {
         super(context);
+    }
+
+    public PartShadowPopupView(@NonNull Screen screen) {
+        super(screen);
+    }
+
+    public PartShadowPopupView(@NonNull Fragment fragment) {
+        super(fragment);
+    }
+
+    public PartShadowPopupView(@NonNull Views viewAction) {
+        super(viewAction);
+    }
+
+    public PartShadowPopupView(@NonNull ControlTower controlAction) {
+        super(controlAction);
     }
 
     @Override

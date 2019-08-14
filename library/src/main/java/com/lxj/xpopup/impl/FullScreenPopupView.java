@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -13,6 +14,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
+import com.eternity.android.annotation.extra.core.svc.control.ControlTower;
+import com.eternity.android.annotation.extra.core.svc.screen.Screen;
+import com.eternity.android.annotation.extra.core.svc.views.Views;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.animator.PopupAnimator;
 import com.lxj.xpopup.animator.TranslateAnimator;
@@ -29,6 +33,22 @@ import com.lxj.xpopup.util.XPopupUtils;
 public class FullScreenPopupView extends CenterPopupView {
     public FullScreenPopupView(@NonNull Context context) {
         super(context);
+    }
+
+    public FullScreenPopupView(@NonNull Screen screen) {
+        super(screen);
+    }
+
+    public FullScreenPopupView(@NonNull Fragment fragment) {
+        super(fragment);
+    }
+
+    public FullScreenPopupView(@NonNull Views viewAction) {
+        super(viewAction);
+    }
+
+    public FullScreenPopupView(@NonNull ControlTower controlAction) {
+        super(controlAction);
     }
 
     @Override

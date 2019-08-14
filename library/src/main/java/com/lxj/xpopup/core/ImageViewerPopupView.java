@@ -17,6 +17,7 @@ import android.support.transition.Transition;
 import android.support.transition.TransitionListenerAdapter;
 import android.support.transition.TransitionManager;
 import android.support.transition.TransitionSet;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
@@ -29,6 +30,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eternity.android.annotation.extra.core.svc.control.ControlTower;
+import com.eternity.android.annotation.extra.core.svc.screen.Screen;
+import com.eternity.android.annotation.extra.core.svc.views.Views;
 import com.lxj.xpermission.PermissionConstants;
 import com.lxj.xpermission.XPermission;
 import com.lxj.xpopup.R;
@@ -77,6 +81,30 @@ public class ImageViewerPopupView extends BasePopupView implements OnDragChangeL
 
     public ImageViewerPopupView(@NonNull Context context) {
         super(context);
+        initInject();
+    }
+
+    public ImageViewerPopupView(@NonNull Fragment fragment) {
+        super(fragment);
+        initInject();
+    }
+
+    public ImageViewerPopupView(@NonNull Screen screen) {
+        super(screen);
+        initInject();
+    }
+
+    public ImageViewerPopupView(@NonNull Views viewAction) {
+        super(viewAction);
+        initInject();
+    }
+
+    public ImageViewerPopupView(@NonNull ControlTower controlAction) {
+        super(controlAction);
+        initInject();
+    }
+
+    private void initInject() {
         container = findViewById(R.id.container);
         initImplContentView();
     }

@@ -2,8 +2,12 @@ package com.lxj.xpopup.impl;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.widget.TextView;
 
+import com.eternity.android.annotation.extra.core.svc.control.ControlTower;
+import com.eternity.android.annotation.extra.core.svc.screen.Screen;
+import com.eternity.android.annotation.extra.core.svc.views.Views;
 import com.lxj.xpopup.R;
 import com.lxj.xpopup.core.CenterPopupView;
 
@@ -13,8 +17,25 @@ import com.lxj.xpopup.core.CenterPopupView;
  */
 public class LoadingPopupView extends CenterPopupView {
     private TextView tv_title;
+
     public LoadingPopupView(@NonNull Context context) {
         super(context);
+    }
+
+    public LoadingPopupView(@NonNull Fragment context) {
+        super(context);
+    }
+
+    public LoadingPopupView(@NonNull Screen screen) {
+        super(screen);
+    }
+
+    public LoadingPopupView(@NonNull Views viewAction) {
+        super(viewAction);
+    }
+
+    public LoadingPopupView(@NonNull ControlTower controlAction) {
+        super(controlAction);
     }
 
     @Override
@@ -24,10 +45,11 @@ public class LoadingPopupView extends CenterPopupView {
 
     /**
      * 绑定已有布局
+     *
      * @param layoutId 如果要显示标题，则要求必须有id为tv_title的TextView，否则无任何要求
      * @return
      */
-    public LoadingPopupView bindLayout(int layoutId){
+    public LoadingPopupView bindLayout(int layoutId) {
         bindLayoutId = layoutId;
         return this;
     }
@@ -36,14 +58,15 @@ public class LoadingPopupView extends CenterPopupView {
     protected void initPopupContent() {
         super.initPopupContent();
         tv_title = findViewById(R.id.tv_title);
-        if(title!=null && tv_title!=null){
+        if (title != null && tv_title != null) {
             tv_title.setVisibility(VISIBLE);
             tv_title.setText(title);
         }
     }
 
     private String title;
-    public LoadingPopupView setTitle(String title){
+
+    public LoadingPopupView setTitle(String title) {
         this.title = title;
         return this;
     }

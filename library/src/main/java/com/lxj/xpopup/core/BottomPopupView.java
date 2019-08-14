@@ -2,9 +2,14 @@ package com.lxj.xpopup.core;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.eternity.android.annotation.extra.core.svc.control.ControlTower;
+import com.eternity.android.annotation.extra.core.svc.screen.Screen;
+import com.eternity.android.annotation.extra.core.svc.views.Views;
 import com.lxj.xpopup.R;
 import com.lxj.xpopup.animator.PopupAnimator;
 import com.lxj.xpopup.enums.PopupStatus;
@@ -18,8 +23,33 @@ import com.lxj.xpopup.widget.SmartDragLayout;
  */
 public class BottomPopupView extends BasePopupView {
     protected SmartDragLayout bottomPopupContainer;
+
     public BottomPopupView(@NonNull Context context) {
         super(context);
+        initInject();
+    }
+
+    public BottomPopupView(@NonNull Screen screen) {
+        super(screen);
+        initInject();
+    }
+
+    public BottomPopupView(@NonNull Fragment fragment) {
+        super(fragment);
+        initInject();
+    }
+
+    public BottomPopupView(@NonNull Views viewAction) {
+        super(viewAction);
+        initInject();
+    }
+
+    public BottomPopupView(@NonNull ControlTower controlAction) {
+        super(controlAction);
+        initInject();
+    }
+
+    private void initInject(){
         bottomPopupContainer = findViewById(R.id.bottomPopupContainer);
         initImplContentView();
     }
@@ -52,6 +82,7 @@ public class BottomPopupView extends BasePopupView {
             public void onClose() {
                 doAfterDismiss();
             }
+
             @Override
             public void onOpen() {
                 BottomPopupView.super.doAfterShow();
@@ -69,9 +100,9 @@ public class BottomPopupView extends BasePopupView {
 
     @Override
     protected void doAfterShow() {
-        if(popupInfo.enableDrag){
+        if (popupInfo.enableDrag) {
             //do nothing self.
-        }else {
+        } else {
             super.doAfterShow();
         }
     }

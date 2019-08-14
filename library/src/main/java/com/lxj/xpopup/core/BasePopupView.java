@@ -1,10 +1,15 @@
 package com.lxj.xpopup.core;
 
 import android.app.Activity;
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Context;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,6 +22,9 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
+import com.eternity.android.annotation.extra.core.svc.control.ControlTower;
+import com.eternity.android.annotation.extra.core.svc.screen.Screen;
+import com.eternity.android.annotation.extra.core.svc.views.Views;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.animator.EmptyAnimator;
 import com.lxj.xpopup.animator.PopupAnimator;
@@ -39,7 +47,7 @@ import static com.lxj.xpopup.enums.PopupAnimation.NoAnimation;
  * Description: 弹窗基类
  * Create by lxj, at 2018/12/7
  */
-public abstract class BasePopupView extends FrameLayout {
+public abstract class BasePopupView extends FrameLayout implements LifecycleObserver {
     private static Stack<BasePopupView> stack = new Stack<>(); //静态存储所有弹窗对象
     public PopupInfo popupInfo;
     protected PopupAnimator popupContentAnimator;
@@ -50,6 +58,7 @@ public abstract class BasePopupView extends FrameLayout {
 
     public BasePopupView(@NonNull Context context) {
         super(context);
+        register((AppCompatActivity) context);
         touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         shadowBgAnimator = new ShadowBgAnimator(this);
         //  添加Popup窗体内容View
@@ -57,6 +66,40 @@ public abstract class BasePopupView extends FrameLayout {
         // 事先隐藏，等测量完毕恢复，避免View影子跳动现象。
         contentView.setAlpha(0);
         addView(contentView);
+    }
+
+    public BasePopupView(@NonNull Fragment fragment) {
+        super(fragment.getContext());
+        Context context = fragment.getContext();
+        register(fragment);
+        touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+        shadowBgAnimator = new ShadowBgAnimator(this);
+        //  添加Popup窗体内容View
+        View contentView = LayoutInflater.from(context).inflate(getPopupLayoutId(), this, false);
+        // 事先隐藏，等测量完毕恢复，避免View影子跳动现象。
+        contentView.setAlpha(0);
+        addView(contentView);
+    }
+
+    public BasePopupView(@NonNull Screen screen) {
+        super((Context) screen.getHostActivity());
+        Context context = (Context) screen.getHostActivity();
+        register(screen);
+        touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+        shadowBgAnimator = new ShadowBgAnimator(this);
+        //  添加Popup窗体内容View
+        View contentView = LayoutInflater.from(context).inflate(getPopupLayoutId(), this, false);
+        // 事先隐藏，等测量完毕恢复，避免View影子跳动现象。
+        contentView.setAlpha(0);
+        addView(contentView);
+    }
+
+    public BasePopupView(@NonNull Views viewAction) {
+        this(viewAction.getScreen());
+    }
+
+    public BasePopupView(@NonNull ControlTower controlAction) {
+        this(controlAction.getScreen());
     }
 
     public BasePopupView(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -68,6 +111,57 @@ public abstract class BasePopupView extends FrameLayout {
     }
 
     protected abstract void initImplContentView();
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    public void onCreated() {
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    public void onStarted() {
+
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    public void onResumed() {
+
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    public void onPause() {
+
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    public void onStop() {
+
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    public void onDestroy() {
+    }
+
+    public void register(AppCompatActivity activity) {
+        activity.getLifecycle().addObserver(this);
+    }
+
+
+    public void register(Fragment fragment) {
+        fragment.getLifecycle().addObserver(this);
+    }
+
+
+    public void register(Screen screen) {
+        screen.getLifecycle().addObserver(this);
+    }
+
+
+    public void register(Views views) {
+        register(views.getScreen());
+    }
+
+    public void register(ControlTower controlTower) {
+        register(controlTower.getScreen());
+    }
 
     /**
      * 执行初始化

@@ -2,11 +2,15 @@ package com.lxj.xpopup.impl;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.eternity.android.annotation.extra.core.svc.control.ControlTower;
+import com.eternity.android.annotation.extra.core.svc.screen.Screen;
+import com.eternity.android.annotation.extra.core.svc.views.Views;
 import com.lxj.easyadapter.EasyAdapter;
 import com.lxj.easyadapter.MultiItemTypeAdapter;
 import com.lxj.easyadapter.ViewHolder;
@@ -30,6 +34,22 @@ public class BottomListPopupView extends BottomPopupView {
 
     public BottomListPopupView(@NonNull Context context) {
         super(context);
+    }
+
+    public BottomListPopupView(@NonNull Fragment fragment) {
+        super(fragment);
+    }
+
+    public BottomListPopupView(@NonNull Screen screen) {
+        super(screen);
+    }
+
+    public BottomListPopupView(@NonNull Views viewAction) {
+        super(viewAction);
+    }
+
+    public BottomListPopupView(@NonNull ControlTower controlAction) {
+        super(controlAction);
     }
 
     /**
@@ -65,7 +85,7 @@ public class BottomListPopupView extends BottomPopupView {
         recyclerView = findViewById(R.id.recyclerView);
         tv_title = findViewById(R.id.tv_title);
 
-        if(tv_title!=null){
+        if (tv_title != null) {
             if (TextUtils.isEmpty(title)) {
                 tv_title.setVisibility(GONE);
             } else {
@@ -86,7 +106,7 @@ public class BottomListPopupView extends BottomPopupView {
 
                 // 对勾View
                 if (checkedPosition != -1) {
-                    if(holder.getView(R.id.check_view)!=null){
+                    if (holder.getView(R.id.check_view) != null) {
                         holder.getView(R.id.check_view).setVisibility(position == checkedPosition ? VISIBLE : GONE);
                         holder.<CheckView>getView(R.id.check_view).setColor(XPopup.getPrimaryColor());
                     }
