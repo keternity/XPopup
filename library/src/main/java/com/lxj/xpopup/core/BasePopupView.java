@@ -3,6 +3,7 @@ package com.lxj.xpopup.core;
 import android.app.Activity;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Context;
 import android.graphics.Rect;
@@ -55,6 +56,7 @@ public abstract class BasePopupView extends FrameLayout implements LifecycleObse
     private int touchSlop;
     public PopupStatus popupStatus = PopupStatus.Dismiss;
     private boolean isCreated = false, cancelable = true;
+    private LifecycleOwner lifecycleOwner;
 
     public BasePopupView(@NonNull Context context) {
         super(context);
@@ -142,18 +144,18 @@ public abstract class BasePopupView extends FrameLayout implements LifecycleObse
 
     public void register(AppCompatActivity activity) {
         activity.getLifecycle().addObserver(this);
+        lifecycleOwner = activity;
     }
-
 
     public void register(Fragment fragment) {
         fragment.getLifecycle().addObserver(this);
+        lifecycleOwner = fragment;
     }
-
 
     public void register(Screen screen) {
         screen.getLifecycle().addObserver(this);
+        lifecycleOwner = screen;
     }
-
 
     public void register(Views views) {
         register(views.getScreen());
@@ -162,6 +164,11 @@ public abstract class BasePopupView extends FrameLayout implements LifecycleObse
     public void register(ControlTower controlTower) {
         register(controlTower.getScreen());
     }
+
+    public LifecycleOwner getLifecycleOwner() {
+        return lifecycleOwner;
+    }
+
 
     /**
      * 执行初始化
