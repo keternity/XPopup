@@ -60,7 +60,7 @@ public abstract class BasePopupView extends FrameLayout implements LifecycleObse
 
     public BasePopupView(@NonNull Context context) {
         super(context);
-        register((AppCompatActivity) context);
+        lifecycleOwner = (AppCompatActivity) context;
         touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         shadowBgAnimator = new ShadowBgAnimator(this);
         //  添加Popup窗体内容View
@@ -72,8 +72,8 @@ public abstract class BasePopupView extends FrameLayout implements LifecycleObse
 
     public BasePopupView(@NonNull Fragment fragment) {
         super(fragment.getContext());
+        lifecycleOwner = fragment;
         Context context = fragment.getContext();
-        register(fragment);
         touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         shadowBgAnimator = new ShadowBgAnimator(this);
         //  添加Popup窗体内容View
@@ -85,8 +85,8 @@ public abstract class BasePopupView extends FrameLayout implements LifecycleObse
 
     public BasePopupView(@NonNull Screen screen) {
         super((Context) screen.getHostActivity());
+        lifecycleOwner = screen;
         Context context = (Context) screen.getHostActivity();
-        register(screen);
         touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         shadowBgAnimator = new ShadowBgAnimator(this);
         //  添加Popup窗体内容View
@@ -144,17 +144,14 @@ public abstract class BasePopupView extends FrameLayout implements LifecycleObse
 
     public void register(AppCompatActivity activity) {
         activity.getLifecycle().addObserver(this);
-        lifecycleOwner = activity;
     }
 
     public void register(Fragment fragment) {
         fragment.getLifecycle().addObserver(this);
-        lifecycleOwner = fragment;
     }
 
     public void register(Screen screen) {
         screen.getLifecycle().addObserver(this);
-        lifecycleOwner = screen;
     }
 
     public void register(Views views) {
