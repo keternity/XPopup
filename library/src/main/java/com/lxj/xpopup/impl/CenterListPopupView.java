@@ -86,6 +86,7 @@ public class CenterListPopupView extends CenterPopupView {
         if (tv_title != null) {
             if (TextUtils.isEmpty(title)) {
                 tv_title.setVisibility(GONE);
+                findViewById(R.id.xpopup_divider).setVisibility(GONE);
             } else {
                 tv_title.setText(title);
             }

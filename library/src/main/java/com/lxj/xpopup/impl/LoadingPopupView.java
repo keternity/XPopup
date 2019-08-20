@@ -58,7 +58,11 @@ public class LoadingPopupView extends CenterPopupView {
     protected void initPopupContent() {
         super.initPopupContent();
         tv_title = findViewById(R.id.tv_title);
-        if (title != null && tv_title != null) {
+        setup();
+    }
+
+    protected void setup(){
+        if(title!=null && tv_title!=null){
             tv_title.setVisibility(VISIBLE);
             tv_title.setText(title);
         }
@@ -68,6 +72,7 @@ public class LoadingPopupView extends CenterPopupView {
 
     public LoadingPopupView setTitle(String title) {
         this.title = title;
+        setup();
         return this;
     }
 }
