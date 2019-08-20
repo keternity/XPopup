@@ -38,7 +38,8 @@ import com.lxj.xpopup.enums.PopupStatus;
 import com.lxj.xpopup.impl.FullScreenPopupView;
 import com.lxj.xpopup.util.KeyboardUtils;
 import com.lxj.xpopup.util.XPopupUtils;
-
+import com.lxj.xpopup.util.navbar.NavigationBarObserver;
+import com.lxj.xpopup.util.navbar.OnNavigationBarListener;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -48,7 +49,7 @@ import static com.lxj.xpopup.enums.PopupAnimation.NoAnimation;
  * Description: 弹窗基类
  * Create by lxj, at 2018/12/7
  */
-public abstract class BasePopupView extends FrameLayout implements LifecycleObserver {
+public abstract class BasePopupView extends FrameLayout implements OnNavigationBarListener, LifecycleObserver {
     private static Stack<BasePopupView> stack = new Stack<>(); //静态存储所有弹窗对象
     public PopupInfo popupInfo;
     protected PopupAnimator popupContentAnimator;
@@ -173,6 +174,9 @@ public abstract class BasePopupView extends FrameLayout implements LifecycleObse
     public void init() {
         if (popupStatus == PopupStatus.Showing) return;
         popupStatus = PopupStatus.Showing;
+        NavigationBarObserver.getInstance().register(getContext());
+        NavigationBarObserver.getInstance().addOnNavigationBarListener(this);
+
         //1. 初始化Popup
         if (!isCreated) {
             initPopupContent();
@@ -193,22 +197,7 @@ public abstract class BasePopupView extends FrameLayout implements LifecycleObse
             @Override
             public void run() {
                 // 如果有导航栏，则不能覆盖导航栏，判断各种屏幕方向
-                FrameLayout.LayoutParams params = (LayoutParams) getLayoutParams();
-                int rotation = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
-                if (rotation == 0) {
-                    params.leftMargin = 0;
-                    params.rightMargin = 0;
-                    params.bottomMargin = XPopupUtils.isNavBarVisible(getContext()) ? XPopupUtils.getNavBarHeight() : 0;
-                } else if (rotation == 1) {
-                    params.bottomMargin = 0;
-                    params.rightMargin = XPopupUtils.isNavBarVisible(getContext()) ? XPopupUtils.getNavBarHeight() : 0;
-                    params.leftMargin = 0;
-                } else if (rotation == 3) {
-                    params.bottomMargin = 0;
-                    params.leftMargin = 0;
-                    params.rightMargin = XPopupUtils.isNavBarVisible(getContext()) ? XPopupUtils.getNavBarHeight() : 0;
-                }
-                setLayoutParams(params);
+                applySize(false);
                 getPopupContentView().setAlpha(1f);
 
                 //2. 收集动画执行器
@@ -227,7 +216,6 @@ public abstract class BasePopupView extends FrameLayout implements LifecycleObse
 
     }
 
-    private int preSoftMode = -1;
     private boolean hasMoveUp = false;
 
     private void collectAnimator() {
@@ -250,6 +238,42 @@ public abstract class BasePopupView extends FrameLayout implements LifecycleObse
                 popupContentAnimator.initAnimator();
             }
         }
+    }
+
+    @Override
+    public void onNavigationBarChange(boolean show) {
+        if(!show){
+            applyFull();
+        }else {
+            applySize(true);
+        }
+    }
+    protected void applyFull(){
+        FrameLayout.LayoutParams params = (LayoutParams) getLayoutParams();
+        params.topMargin = 0;
+        params.leftMargin = 0;
+        params.bottomMargin = 0;
+        params.rightMargin = 0;
+        setLayoutParams(params);
+    }
+    protected void applySize(boolean isShowNavBar){
+        FrameLayout.LayoutParams params = (LayoutParams) getLayoutParams();
+        int rotation = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
+        boolean isNavBarShown = isShowNavBar || XPopupUtils.isNavBarVisible(getContext());
+        if (rotation == 0) {
+            params.leftMargin = 0;
+            params.rightMargin = 0;
+            params.bottomMargin = isNavBarShown ? XPopupUtils.getNavBarHeight() : 0;
+        } else if (rotation == 1) {
+            params.bottomMargin = 0;
+            params.rightMargin = isNavBarShown ? XPopupUtils.getNavBarHeight() : 0;
+            params.leftMargin = 0;
+        } else if (rotation == 3) {
+            params.bottomMargin = 0;
+            params.leftMargin = 0;
+            params.rightMargin = isNavBarShown ? XPopupUtils.getNavBarHeight() : 0;
+        }
+        setLayoutParams(params);
     }
 
     public BasePopupView show() {
@@ -279,15 +303,6 @@ public abstract class BasePopupView extends FrameLayout implements LifecycleObse
                 popupInfo.decorView.addView(BasePopupView.this, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
                         FrameLayout.LayoutParams.MATCH_PARENT));
 
-                //如果弹窗内包含输入框，为了保证上移距离的正确计算，需要修改Soft Mode，弹窗消失后会还原
-                ArrayList<EditText> list = new ArrayList<>();
-                XPopupUtils.findAllEditText(list, (ViewGroup) getPopupContentView());
-                if (list.size() > 0) {
-                    Window window = ((Activity) getContext()).getWindow();
-                    preSoftMode = window.getAttributes().softInputMode;
-                    if (preSoftMode != WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-                        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                }
                 //2. do init，game start.
                 init();
             }
@@ -552,7 +567,6 @@ public abstract class BasePopupView extends FrameLayout implements LifecycleObse
         if (popupStatus == PopupStatus.Dismissing) return;
         popupStatus = PopupStatus.Dismissing;
         if (popupInfo.autoOpenSoftInput) KeyboardUtils.hideSoftInput(this);
-        restoreSoftMode();
         clearFocus();
         doDismissAnimation();
         doAfterDismiss();
@@ -573,14 +587,6 @@ public abstract class BasePopupView extends FrameLayout implements LifecycleObse
         delayDismiss(delay);
     }
 
-    protected void restoreSoftMode() {
-//        Window window = ((Activity) getContext()).getWindow();
-//        if(preSoftMode!=-1) {
-//            window.setSoftInputMode(preSoftMode);
-//            preSoftMode = -1;
-//        }
-    }
-
     protected void doAfterDismiss() {
         if (popupInfo.autoOpenSoftInput) KeyboardUtils.hideSoftInput(this);
         removeCallbacks(doAfterDismissTask);
@@ -599,6 +605,7 @@ public abstract class BasePopupView extends FrameLayout implements LifecycleObse
                 dismissWithRunnable = null;//no cache, avoid some bad edge effect.
             }
             popupStatus = PopupStatus.Dismiss;
+            NavigationBarObserver.getInstance().removeOnNavigationBarListener(BasePopupView.this);
 
             if (!stack.isEmpty()) stack.pop();
             if (popupInfo != null && popupInfo.isRequestFocus) {
