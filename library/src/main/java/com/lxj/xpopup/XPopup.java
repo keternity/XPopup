@@ -1,5 +1,6 @@
 package com.lxj.xpopup;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.support.v4.app.Fragment;
@@ -85,13 +86,13 @@ public class XPopup {
 
     public static class Builder {
         private final PopupInfo popupInfo = new PopupInfo();
-        private AppCompatActivity context;
+        private Context context;
         private Fragment fragment;
         private Screen screen;
         private Views views;
         private ControlTower controlAction;
 
-        public Builder(AppCompatActivity context) {
+        public Builder(Context context) {
             this.context = context;
         }
 
