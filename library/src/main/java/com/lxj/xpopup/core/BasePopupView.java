@@ -40,6 +40,7 @@ import com.lxj.xpopup.util.KeyboardUtils;
 import com.lxj.xpopup.util.XPopupUtils;
 import com.lxj.xpopup.util.navbar.NavigationBarObserver;
 import com.lxj.xpopup.util.navbar.OnNavigationBarListener;
+
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -54,9 +55,9 @@ public abstract class BasePopupView extends FrameLayout implements OnNavigationB
     public PopupInfo popupInfo;
     protected PopupAnimator popupContentAnimator;
     protected ShadowBgAnimator shadowBgAnimator;
-    private int touchSlop;
+    protected int touchSlop;
     public PopupStatus popupStatus = PopupStatus.Dismiss;
-    private boolean isCreated = false, cancelable = true;
+    private boolean isCreated = false;
     private LifecycleOwner lifecycleOwner;
 
     public BasePopupView(@NonNull Context context) {
@@ -242,13 +243,14 @@ public abstract class BasePopupView extends FrameLayout implements OnNavigationB
 
     @Override
     public void onNavigationBarChange(boolean show) {
-        if(!show){
+        if (!show) {
             applyFull();
-        }else {
+        } else {
             applySize(true);
         }
     }
-    protected void applyFull(){
+
+    protected void applyFull() {
         FrameLayout.LayoutParams params = (LayoutParams) getLayoutParams();
         params.topMargin = 0;
         params.leftMargin = 0;
@@ -256,7 +258,8 @@ public abstract class BasePopupView extends FrameLayout implements OnNavigationB
         params.rightMargin = 0;
         setLayoutParams(params);
     }
-    protected void applySize(boolean isShowNavBar){
+
+    protected void applySize(boolean isShowNavBar) {
         FrameLayout.LayoutParams params = (LayoutParams) getLayoutParams();
         int rotation = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
         boolean isNavBarShown = isShowNavBar || XPopupUtils.isNavBarVisible(getContext());
@@ -693,9 +696,7 @@ public abstract class BasePopupView extends FrameLayout implements OnNavigationB
                     float dy = event.getY() - y;
                     float distance = (float) Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
                     if (distance < touchSlop && popupInfo.isDismissOnTouchOutside) {
-                        if (cancelable) {
-                            dismiss();
-                        }
+                        dismiss();
                     }
                     x = 0;
                     y = 0;
@@ -703,9 +704,5 @@ public abstract class BasePopupView extends FrameLayout implements OnNavigationB
             }
         }
         return true;
-    }
-
-    public void setCancelable(boolean cancelable) {
-        this.cancelable = cancelable;
     }
 }
