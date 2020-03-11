@@ -3,8 +3,9 @@
 buildscript {
     
     repositories {
-        google()
-        jcenter()
+        jcenter(){ url 'https://maven.aliyun.com/repository/jcenter'}
+        mavenCentral()
+        maven { url 'https://maven.aliyun.com/repository/google' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.0'
@@ -18,12 +19,15 @@ buildscript {
 allprojects {
     repositories {
         maven {
-            url "http://192.168.2.80:8081/repository/keternity-common-release/"
+            url "http://nexus.shxgroup.net/repository/maven-android/"
 //            url "http://192.168.3.66:8081/repository/keternity-common-release/"
 //            url "http://192.168.0.112:8081/repository/keternity-common-release/"
         }
-        google()
-        jcenter()
+        jcenter(){ url 'https://maven.aliyun.com/repository/jcenter'}
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven {
+            url "https://jitpack.io"
+        }
     }
 }
 

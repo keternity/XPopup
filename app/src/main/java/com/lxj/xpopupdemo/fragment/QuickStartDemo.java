@@ -84,11 +84,17 @@ public class QuickStartDemo extends BaseFragment implements View.OnClickListener
 
     CustomDrawerPopupView drawerPopupView;
 
+    BasePopupView basePopupView;
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnShowConfirm: //带确认和取消按钮的弹窗
-                new XPopup.Builder(getContext())
+                if (basePopupView != null){
+                    basePopupView.show();
+                    return;
+                }
+                basePopupView =  new XPopup.Builder(getContext())
 //                         .dismissOnTouchOutside(false)
 //                         .autoDismiss(false)
 //                        .popupAnimation(PopupAnimation.NoAnimation)
