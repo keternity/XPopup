@@ -1,11 +1,10 @@
 package com.lxj.xpopup.core;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+import androidx.annotation.NonNull;
 
 import com.eternity.android.annotation.extra.core.svc.control.ControlTower;
 import com.eternity.android.annotation.extra.core.svc.screen.Screen;

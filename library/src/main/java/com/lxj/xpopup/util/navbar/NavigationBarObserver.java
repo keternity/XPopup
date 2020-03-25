@@ -39,7 +39,7 @@ public final class NavigationBarObserver extends ContentObserver {
     }
 
     public void register(Context context) {
-        this.context = context;
+        this.context = context.getApplicationContext();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && context != null
                 && context.getContentResolver() != null && !mIsRegister) {
             Uri uri = null;
@@ -93,6 +93,11 @@ public final class NavigationBarObserver extends ContentObserver {
     }
 
     public void removeOnNavigationBarListener(OnNavigationBarListener listener) {
+        if(mIsRegister){
+            context.getContentResolver().unregisterContentObserver(this);
+            mIsRegister = false;
+        }
+        this.context = null;
         if (listener == null || mListeners == null) {
             return;
         }

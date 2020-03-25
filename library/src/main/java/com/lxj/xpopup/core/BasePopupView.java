@@ -7,10 +7,8 @@ import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -171,7 +169,7 @@ public abstract class BasePopupView extends FrameLayout implements OnNavigationB
     /**
      * 执行初始化
      */
-    public void init() {
+    protected void init() {
         if (popupStatus == PopupStatus.Showing) return;
         popupStatus = PopupStatus.Showing;
         NavigationBarObserver.getInstance().register(getContext());
@@ -202,6 +200,8 @@ public abstract class BasePopupView extends FrameLayout implements OnNavigationB
 
                 //2. 收集动画执行器
                 collectAnimator();
+
+                if (popupInfo.xPopupCallback != null) popupInfo.xPopupCallback.beforeShow();
 
                 //3. 执行动画
                 doShowAnimation();
@@ -483,7 +483,7 @@ public abstract class BasePopupView extends FrameLayout implements OnNavigationB
      * 执行显示动画：动画由2部分组成，一个是背景渐变动画，一个是Content的动画；
      * 背景动画由父类实现，Content由子类实现
      */
-    public void doShowAnimation() {
+    protected void doShowAnimation() {
         if (popupInfo.hasShadowBg) {
             shadowBgAnimator.isZeroDuration = (popupInfo.popupAnimation == NoAnimation);
             shadowBgAnimator.animateShow();
@@ -496,7 +496,7 @@ public abstract class BasePopupView extends FrameLayout implements OnNavigationB
      * 执行消失动画：动画由2部分组成，一个是背景渐变动画，一个是Content的动画；
      * 背景动画由父类实现，Content由子类实现
      */
-    public void doDismissAnimation() {
+    protected void doDismissAnimation() {
         if (popupInfo.hasShadowBg) {
             shadowBgAnimator.animateDismiss();
         }
@@ -566,7 +566,7 @@ public abstract class BasePopupView extends FrameLayout implements OnNavigationB
      * 消失
      */
     public void dismiss() {
-        if (popupStatus == PopupStatus.Dismissing) return;
+        if (popupStatus == PopupStatus.Dismissing || popupStatus == PopupStatus.Dismiss) return;
         popupStatus = PopupStatus.Dismissing;
         if (popupInfo.autoOpenSoftInput) KeyboardUtils.hideSoftInput(this);
         clearFocus();

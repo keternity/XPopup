@@ -2,17 +2,14 @@ package com.lxj.xpopup.impl;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+
+import androidx.annotation.NonNull;
 
 import com.eternity.android.annotation.extra.core.svc.control.ControlTower;
 import com.eternity.android.annotation.extra.core.svc.screen.Screen;
