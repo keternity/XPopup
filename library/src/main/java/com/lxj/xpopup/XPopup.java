@@ -3,11 +3,11 @@ package com.lxj.xpopup;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PointF;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+
+import androidx.fragment.app.Fragment;
 
 import com.eternity.android.annotation.extra.core.svc.control.ControlTower;
 import com.eternity.android.annotation.extra.core.svc.screen.Screen;

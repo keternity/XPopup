@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.eternity.android.annotation.extra.core.svc.control.ControlTower;
 import com.eternity.android.annotation.extra.core.svc.screen.Screen;

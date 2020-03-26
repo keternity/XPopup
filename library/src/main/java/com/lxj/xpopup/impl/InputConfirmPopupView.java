@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.fragment.app.Fragment;
+
 import android.text.TextUtils;
 import android.view.View;
 

@@ -20,8 +20,6 @@ allprojects {
     repositories {
         maven {
             url "http://nexus.shxgroup.net/repository/maven-android/"
-//            url "http://192.168.3.66:8081/repository/keternity-common-release/"
-//            url "http://192.168.0.112:8081/repository/keternity-common-release/"
         }
         jcenter(){ url 'https://maven.aliyun.com/repository/jcenter'}
         maven { url 'https://maven.aliyun.com/repository/google' }
@@ -35,4 +33,3 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-tasks.getByPath(":library:javadocRelease").enabled = false
